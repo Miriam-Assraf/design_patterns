@@ -4,55 +4,60 @@ import java.util.Random;
 import javafx.scene.paint.Color;
 
 public class Shape {
-	protected int x, y;
+	protected int width, height;
 	protected Color color;
 
-	public Shape() {
-		this(0, 0, RandomColor());
+	public Shape(int width, int height) {
+		this.width = width;
+		this.height = height;
+		this.color = RandomColor();		
 	}
 
-	public Shape(int x, int y) {
-		this(x, y, RandomColor());
+	public Shape(int width, int height, Color color) {
+		this.width = width;
+		this.height = height;
+		this.color = color;
 	}
-
-	public Shape(int x, int y, Color color) {
-		setX(x);
-		setY(y);
-		setColor(color);
+	
+	public int getWidth() {
+		return this.width;
 	}
-
-	public int getX() {
-		return x;
+	
+	public int getHeight() {
+		return this.height;
 	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-
+	
 	public Color getColor() {
-		return color;
+		return this.color;
 	}
-
+	
+	public void setWidth(int width) {
+		if (width > 0) {
+			this.width = width;
+		}
+	}
+	
+	public void setHeight(int height) {
+		if (height > 0) {
+			this.height = height;
+		}
+	}
+	
 	public void setColor(Color color) {
 		this.color = color;
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return super.equals(obj);
+	
+	public int getArea() {
+		return this.width*this.height;
 	}
+	//@Override
+	//public boolean equals(Object obj) {
+	//	return super.equals(obj);
+	//}
 
 	@Override
 	public String toString() {
-		return "The X located is: " + x + "\n The Y located is: " + y + " \n The color is: " + color.toString() + "\n";
+		return "Shape width: " + String.valueOf(this.width) + "\nShape height: " + String.valueOf(this.height) + "\nSahpe color: " + color.toString() + "\n";
 	}
 
 	public static Color RandomColor() {

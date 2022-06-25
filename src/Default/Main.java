@@ -12,9 +12,9 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		Model model= new Model("Tel-aviv", "Israel"); //Create a new seaport
-		model.addShipToPort();
-		MainView MainView = new MainView(model, stage);
-		Controller controller = new Controller(model,MainView);
+		Model model= new Model(); 
+		model.createPort("Tel-Aviv Port", "Israel");
+		//MainView MainView = new MainView(model.getPortByName("Tel-Aviv Port"), stage);
+		//Controller controller = new Controller(model.getPortByName("Tel-Aviv Port"), MainView);
 	}
 }

@@ -1,7 +1,79 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.Random;
 import javafx.scene.paint.Color;
+
+public class Model {
+	ArrayList<NotNullSeaPort> ports;
+
+	public Model() {
+		this.ports = new ArrayList<NotNullSeaPort>();
+	}
+
+	public Model(ArrayList<NotNullSeaPort> ports) {
+		this.ports = ports;
+	}
+	
+	public boolean createPort(String name, String country, int capacity) {
+		boolean success = true;
+		
+		for (NotNullSeaPort port: this.ports) {
+			// name should be unique
+			if (port.getName() == name) {
+				success = false;
+			}
+		}
+		
+		if (success) {
+			this.ports.add(new NotNullSeaPort(name, country, capacity));
+		}
+		
+		return success;
+	}
+	
+	public boolean removePort(NotNullSeaPort port) {
+		if (this.ports.contains(port)) {
+			this.ports.remove(port);
+			return true;
+		}
+		return false;
+	}
+	
+	public NotNullSeaPort getPortByName(String name) {
+		/* Receives name string */
+		/* Returns port with that name if exists, else null */
+		for (NotNullSeaPort port: this.ports) {
+			if (port.getName() == name) {
+				return port;
+			}
+		}
+		return null;
+	}
+	
+	public ArrayList<NotNullSeaPort> getPortsByCountry(String country) {
+		/* Receives country string */
+		/* Returns a list of ports in that country if exist, else empty list */
+		ArrayList<NotNullSeaPort> ports = new ArrayList<NotNullSeaPort>();
+		for (NotNullSeaPort port: this.ports) {
+			if (port.getCountry() == country) {
+				ports.add(port);
+			}
+		}
+		return ports;
+	}
+	
+	//public void addShipToPort(String name) {
+	//	getPortByName(name).addShips();
+	//}
+}
+/*
+	public static Color RandomColor() {
+		Random random = new Random();
+		return Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255));
+	}
+}
+
 
 public class Model {
 	SeaPort port;
@@ -112,3 +184,4 @@ public class Model {
 		return Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255));
 	}
 }
+*/

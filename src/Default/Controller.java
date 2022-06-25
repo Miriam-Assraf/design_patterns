@@ -1,7 +1,11 @@
 package Default;
 
-import Model.Containerr;
+import Model.IContainer;
+import Model.LoadingDock;
 import Model.Model;
+import Model.NotNullSeaPort;
+import Model.Ship;
+import Model.Track;
 import View.MainView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,24 +14,26 @@ import javafx.scene.input.MouseEvent;
 
 public class Controller {
 
-	private Model model;
+	private NotNullSeaPort port;
 	private MainView modelView;
 
-	public Controller(Model model, MainView mainView) {
-		this.model = model;
+	public Controller(NotNullSeaPort port, MainView mainView) {
+		this.port = port;
 		this.modelView = mainView;
-
-		model.addShipToPort();
-		model.addTrackToPort();
-		model.addLodaDock();
+		/*	
+		port.addShips(new Ship<IContainer<Object>>(200, 400, 400, 80, 15));
+		port.addTrack(new Track<IContainer>(300, 405, 200, 60, 0));
+		port.addLodaDock(new LoadingDock<IContainer>(600, 480));
+		
+		
 		for (int i = 0; i < 20; i++) { // adding containers to ship
-			model.addContainter();
+			port.addContainerToShip();
 		}
 
 		Button move = new Button("move");
 		move.setLayoutX(700);
 		move.setLayoutY(200);
-
+		
 		move.setOnAction(new EventHandler<ActionEvent>() {
 
 			int preesNumber = 0;
@@ -35,19 +41,19 @@ public class Controller {
 			@Override
 			public void handle(ActionEvent arg0) {
 
-				Containerr tempCon = model.moveContainers();
+				IContainer tempCon = port.moveContainers();
 				boolean containerBack = false;
 
 				if (!containerBack && tempCon != null) {
 					if (!tempCon.isMark()) {
-						model.addContainerToLodingDock(tempCon);
+						port.addToLoadContainer(tempCon);
 					} else {
 						tempCon.setMark(false);
-						model.addContainerToTrack(tempCon);
+						port.addContainerToTrack(tempCon);
 						containerBack = true;
 					}
-				} else if (model.getNumOFContainerInLodaDock() > 0) {
-					model.backContainerToship(model.removeContainerFromDock());
+				} else if (port.getLoadContainer().getSizeStack() > 0) {
+					port.backContainerToship(port.removeContainerFromLoad());
 				}
 				mainView.clear();
 				mainView.show();
@@ -65,7 +71,7 @@ public class Controller {
 					int locatedX = (int) mouse.getX();
 					int locatedY = (int) mouse.getY();
 
-					if (model.addMarkToContainerByIndex(locatedX, locatedY, true)) {
+					if (port.addMarkToContainerByIndex(locatedX, locatedY, true)) {
 						stop = true;
 						mainView.clear();
 						mainView.show();
@@ -75,8 +81,9 @@ public class Controller {
 			}
 		};
 
-		mainView.show();
-		mainView.addButoon(move);
-		mainView.addEventHandler(click);
+*/
+		//mainView.show();
+		//mainView.addButoon(move);
+		//mainView.addEventHandler(click);
 	}
 }

@@ -2,37 +2,42 @@ package Model;
 
 import javafx.scene.paint.Color;
 
-public class Track<T extends Containerr > extends Car implements Movetable {
-	Containerr container;
-
-	public Track() {
-		super();
+public class Track extends Car {
+	ContainersStack containers;
+	SeaPort currentPort;
+	
+	public Track(int size, int capacity, SeaPort currentPort) {
+		super(size);
+		this.containers = new ContainersStack(capacity);
+		this.currentPort = currentPort;
 	}
 
-	public Track(int x, int y, int width, int heigth, int carNumber) {
-		this(x, y, RandomColor(), width, heigth, carNumber);
+	public Track(int size, Color color, int capacity, SeaPort currentPort) {
+		super(size, color);
+		this.containers = new ContainersStack(capacity);
+		this.currentPort = currentPort;
 	}
 
-	public Track(int x, int y, Color color, int width, int heigth, int carNumber ) {
-		super(x, y, color, width, heigth, carNumber);
-		this.container = container;
-	}
-
-	public Containerr getContainer() {
-		return container;
-	}
-
-	public boolean addContainer(Containerr container) {
-		if (container != null) {
-			container.setX(x+container.getWidth()/2);
-			container.setY(y+container.getHeigth()-13);
-			this.container = container;
-			return true;
-		}
-		return false;
+	public void addContainer(Container container) {
+		this.containers.load(container);
 	}
 	
-	public Containerr removeContainer() {
-		return container;
+	public Container removeContainer() {
+		return this.containers.unload();
+	}
+	
+	public void enterPort(NotNullSeaPort port) {
+		if (!this.currentPort.isNull()) {
+			// if already in another port - remove from it 
+			((NotNullSeaPort) this.currentPort).removeTrack(this);
+		}
+		this.currentPort = port;
+		port.addTrack(this);
+	}
+	
+	public void leavePort() {
+		if (!this.currentPort.isNull()) {
+			this.currentPort = new NullSeaPort();
+		}
 	}
 }
