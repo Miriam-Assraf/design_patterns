@@ -1,108 +1,43 @@
 package View;
 
-import java.util.ArrayList;
-import java.util.Stack;
-
-import Model.Containerr;
 import Model.Ship;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.TriangleMesh;
+import javafx.util.Pair;
 
 public class ShipView {
-	private Color color;
-	private int x, y, width, heigth, capcity;
-	private ArrayList<Stack<Containerr>> containers;
-
+	public static final double x1 = MainView.width/4;
+	
+	public static final double y1 = MainView.height-(SeaPortView.portStartY/2);
+	public static final double y2 = SeaPortView.portStartY;
+	
+	public static final int alpha = 20;
+	
+	private double x2;
+	
+	private Ship ship;
+	
 	public ShipView(Ship ship) {
-		setX(ship.getX());
-		setY(ship.getY());
-		setWidth(ship.getWidth());
-		setHeigth(ship.getHeight());
-		setCapcity(ship.getCapcity());
-		setColor(ship.getColor());
-		setContainers(ship.getContainers());
-	}
-
-	public Color getColor() {
-		return color;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
-	public int getX() {
-		return x;
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getHeigth() {
-		return heigth;
-	}
-
-	public void setHeigth(int heigth) {
-		this.heigth = heigth;
-	}
-
-	public int getCapcity() {
-		return capcity;
-	}
-
-	public void setCapcity(int capcity) {
-		this.capcity = capcity;
-	}
-
-	public ArrayList<Stack<Containerr>> getContainers() {
-		return containers;
-	}
-
-	public void setContainers(ArrayList<Stack<Containerr>> containers) {
-		this.containers = containers;
+		this.ship = ship;
+		this.x2 = x1 + this.ship.getLoadingDock().getNumStacks() * ContainerView.width;
 	}
 
 	public void show(Group root) {
-		Rectangle rectangle = new Rectangle(x, y, width, heigth);
-		rectangle.setFill(color);
+		
+		
+		RectangleView rectangleView = new RectangleView(x1, y1, this.x2-x1, y2-y1);
+		TriangleView leftTriangleView = new TriangleView(new Pair<Double, Double>(x1, y1),
+				new Pair<Double, Double>(x1, y2), new Pair<Double, Double>(x1 - (this.x2-x1) / 5, y1));
+		TriangleView rightTriangleView = new TriangleView(new Pair<Double, Double>(this.x2, y1),
+				new Pair<Double, Double>(this.x2, y2), new Pair<Double, Double>(this.x2 / 7, y1));
 
-		Polygon trianglePolygon = new Polygon();
-		trianglePolygon.getPoints().setAll((double) x, (double) y, (double) x, (double) y + (double) heigth,
-				(double) x - (double) width / 5, (double) y);
-		trianglePolygon.setFill(color);
-
-		Polygon trianglePolygon1 = new Polygon();
-		trianglePolygon1.getPoints().setAll((double) x + width, (double) y, (double) x + width,
-				(double) y + (double) heigth, (double) x + width + (double) width / 7, (double) y);
-		trianglePolygon1.setFill(color);
-
-		root.getChildren().addAll(rectangle, trianglePolygon, trianglePolygon1);
-
-		for (int i = 0; i < containers.size(); i++) {
-			for (int j = 0; j < containers.get(i).size(); j++) {
-				ContainerView temp = new ContainerView(containers.get(i).get(j));
-				temp.Show(root);
-			}
-		}
+		root.getChildren().addAll(rectangleView.getShape(), leftTriangleView.getShape(), rightTriangleView.getShape());
+		
+		//AllStacksView stacksView = new AllStacksView(ship.getLoadingDock(), x1+alpha/2, y1);
+		//stacksView.show(root);
+	}
+	
+	public double getX2() {
+		return this.x2;
 	}
 }

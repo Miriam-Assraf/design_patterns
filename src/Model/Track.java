@@ -1,43 +1,30 @@
 package Model;
 
-import javafx.scene.paint.Color;
-
-public class Track extends Car {
-	ContainersStack containers;
-	SeaPort currentPort;
+public class Track extends Transport {
+	private static int idSerial = 0;
 	
-	public Track(int size, int capacity, SeaPort currentPort) {
-		super(size);
-		this.containers = new ContainersStack(capacity);
-		this.currentPort = currentPort;
+	public Track(SeaPort currentPort, int numStacks, int stackCapacity) {
+		super(idSerial++, currentPort, numStacks, stackCapacity);
 	}
 
-	public Track(int size, Color color, int capacity, SeaPort currentPort) {
-		super(size, color);
-		this.containers = new ContainersStack(capacity);
-		this.currentPort = currentPort;
-	}
-
-	public void addContainer(Container container) {
-		this.containers.load(container);
+	public Track(SeaPort currentPort, int numStacks) {
+		super(idSerial++, currentPort, numStacks, 0);
 	}
 	
-	public Container removeContainer() {
-		return this.containers.unload();
+	public Track(SeaPort currentPort) {
+		super(idSerial++, currentPort, 1, 0);
 	}
 	
-	public void enterPort(NotNullSeaPort port) {
-		if (!this.currentPort.isNull()) {
-			// if already in another port - remove from it 
-			((NotNullSeaPort) this.currentPort).removeTrack(this);
-		}
-		this.currentPort = port;
-		port.addTrack(this);
+	public Track(int numStacks, int stackCapacity) {
+		super(idSerial++, new NullSeaPort(), numStacks, stackCapacity);
 	}
 	
-	public void leavePort() {
-		if (!this.currentPort.isNull()) {
-			this.currentPort = new NullSeaPort();
-		}
+	public Track(int numStacks) {
+		super(idSerial++, new NullSeaPort(), numStacks, 0);
+	}
+	
+	@Override
+	public String toString() {
+		return "Track " + super.toString();
 	}
 }

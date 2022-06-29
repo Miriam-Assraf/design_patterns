@@ -1,87 +1,45 @@
 package View;
 
-import java.util.ArrayList;
-import Model.Containerr;
-import Model.LoadingDock;
-import Model.SeaPort;
+import Model.NotNullSeaPort;
 import Model.Ship;
+import Model.ShipManager;
 import Model.Track;
+import Model.TrackManager;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 public class SeaPortView {
-
-	private String name;
-	private String country;
-	private LoadingDock loadContainer;
-	private ArrayList<Track> tracks;
-	private ArrayList<Ship> ships;
-
-	public SeaPortView(SeaPort seaPort) {
-		setName(seaPort.getName());
-		setCountry(seaPort.getCountry());
-		setLoadContainer(seaPort.getLoadContainer());
-		setTracks(seaPort.getTracks());
-		setShips(seaPort.getShips());
+	public static final double portStartY = 2*MainView.height/3;
+	private NotNullSeaPort port;
+	private ShipManager shipManager;
+	private TrackManager trackManager;
+	
+	public SeaPortView(NotNullSeaPort port) {
+		this.port = port;
+		this.shipManager = ShipManager.getInstance();
+		this.trackManager = TrackManager.getInstance();
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
-	public Containerr getLoadContainer() {
-		return (Containerr) loadContainer.getContainer();
-	}
-
-	public void setLoadContainer(LoadingDock<Containerr> container) {
-		this.loadContainer = container;
-	}
-
-	public ArrayList<Track> getTracks() {
-		return tracks;
-	}
-
-	public void setTracks(ArrayList<Track> tracks) {
-		this.tracks = tracks;
-	}
-
-	public void setShips(ArrayList<Ship> ships) {
-		this.ships = ships;
-	}
-
-	public ArrayList<Ship> getShips() {
-		return this.ships;
-	}
-
-	public void show(Group root) {
-		Rectangle sky = new Rectangle(0, 0, 1500, ships.get(0).getY() + ships.get(0).getHeight());
-		sky.setFill(Color.LIGHTBLUE);
-		root.getChildren().add(sky);
-
-		Rectangle road = new Rectangle(0, ships.get(0).getY() + ships.get(0).getHeight(), 1500, 1500);
-		road.setFill(Color.GRAY);
-		root.getChildren().add(road);
-
-		ShipView shipView = new ShipView((ships.get(0)));
-		shipView.show(root);
-
-		TrackView trackView = new TrackView(tracks.get(0));
-		trackView.show(root);
-
-		LoadingDockView dock = new LoadingDockView(loadContainer);
-		dock.show(root);
+	public void show(Group root) {		
+		RectangleView skyView = new RectangleView(0, 0, MainView.width, portStartY, Color.LIGHTBLUE);
+		RectangleView roadView = new RectangleView(0, portStartY, MainView.width, MainView.height, Color.GRAY);
+		
+		root.getChildren().addAll(skyView.getShape(), roadView.getShape());
+		
+		Ship ship = this.shipManager.getReadyShip(this.port);
+		if (ship != null) {
+			ShipView shipView = new ShipView(ship);
+			shipView.show(root);
+		}
+		
+		Track track = this.trackManager.getReadyTrack(this.port);
+		if (track != null) {
+			TrackView trackView = new TrackView(track);
+			trackView.show(root);
+		}
+		
+		// shipView.getWidth()
+		AllStacksView stacksView = new AllStacksView(port.getLoadingDock(), ShipView.x1, portStartY);
+		stacksView.show(root);
 	}
 }

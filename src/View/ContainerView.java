@@ -1,77 +1,34 @@
 package View;
 
-import Model.Containerr;
+import Model.Container;
+import Model.ContainerState;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 
 public class ContainerView {
-	private int x, y, width, heigth;
-	private Color color;
-	private boolean mark;
-
-	public ContainerView(Containerr<Object> container) {
-		setX(container.getX());
-		setY(container.getY());
-		setWidth(container.getWidth());
-		setHeigth(container.getHeigth());
-		setColor(container.getColor());
-		setMark(container.isMark());
-	}
-
-	public boolean isMark() {
-		return mark;
-	}
-
-	public void setMark(boolean mark) {
-		this.mark = mark;
-	}
-
-	public int getX() {
-		return x;
-	}
-
-	public void setX(int x) {
+	Container container;
+	
+	public static final double width = 100;
+	public static final double height = 30;
+	
+	private double x,y;
+	
+	public ContainerView(double x, double y) {
 		this.x = x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public void setY(int y) {
 		this.y = y;
 	}
 
-	public int getWidth() {
-		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getHeigth() {
-		return heigth;
-	}
-
-	public void setHeigth(int heigth) {
-		this.heigth = heigth;
-	}
-
-	public Color getColor() {
-		return color;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
-	public void Show(Group root) {
-		Rectangle rectangle = new Rectangle(x, y, width, heigth);
-		rectangle.setFill(color);
-		root.getChildren().add(rectangle);
+	public void show(Group root) {
+		RectangleView containerView = new RectangleView(this.x, this.y, width, height);
+		root.getChildren().add(containerView.getShape());
+		
+		/*if (this.container.getState() == ContainerState.MARKED) {
+			containerView.setStroke(Color.RED);
+		}
+		else {
+			containerView.setStroke(Color.TRANSPARENT);
+		}*/
+		/*
 		if (mark) {
 			Line line0 = new Line(x, y, x + width, y);
 			line0.setStrokeWidth(3);
@@ -86,9 +43,10 @@ public class ContainerView {
 			line3.setStrokeWidth(3);
 			line3.setStroke(Color.RED);
 			root.getChildren().addAll(line0, line1, line2, line3);
-		}
-
-		double spaceLine = width * 0.1;
-		double num0fLine = width / spaceLine;
+		}*/
+		
+		root.getChildren().addAll(containerView.getShape());
+		//double spaceLine = width * 0.1;
+		//double num0fLine = width / spaceLine;
 	}
 }

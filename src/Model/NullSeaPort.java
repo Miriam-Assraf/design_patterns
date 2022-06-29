@@ -7,4 +7,8 @@ public class NullSeaPort extends SeaPort{
 		return true;
 	}
 	
+	@Override
+	public String toString() {
+		return "NullSeaPort object";
+	}
 }

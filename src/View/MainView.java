@@ -1,47 +1,36 @@
 package View;
 
-import Model.Model;
-import javafx.application.Application;
-import javafx.event.Event;
-import javafx.event.EventHandler;
+import Model.NotNullSeaPort;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.media.VideoTrack;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class MainView {
-	private Stage stage;
+	public static final int width = 800;
+	public static final int height = 600;
+	
 	private Group root;
-	private Scene scene;
-	private Model m1;
-	private ModelView modelView;
-
-	public MainView(Model m, Stage s) {
-		this.m1 = m;
-		stage = s;
-		root = new Group();
-		scene = new Scene(root, 900, 900);
-		stage.setScene(scene);
+	
+	public MainView(Stage stage) {
+		this.root = new Group();
+		stage.setScene(new Scene(root, width, height));
 		stage.show();
-		this.modelView = new ModelView(m1);
 	}
 
-	public void show() {
-		modelView.Show(root);
+	public void show(NotNullSeaPort port) {
+		SeaPortView portView = new SeaPortView(port);
+		portView.show(this.root);
 	}
 
 	public void clear() {
 		root.getChildren().clear();
 	}
 
-	public void addButoon(Button b) {
+	/*public void addButoon(Button b) {
 		root.getChildren().add(b);
 	}
 
 	public void addEventHandler(EventHandler<MouseEvent> e) {
 		stage.addEventHandler(MouseEvent.MOUSE_CLICKED, e);
-	}
+	}*/
 }

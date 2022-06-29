@@ -4,67 +4,31 @@ import java.util.ArrayList;
 import java.util.Stack;
 import javafx.scene.paint.Color;
 
-public class Ship extends Shape {
-	//public static final int MaxHeigth = 5;
+public class Ship extends Transport {
 	private static int idSerial = 0;
-	private int id, width, height; 
-	private ListContainersStack containers;
-	private SeaPort currentPort;
 	
-	public Ship(int width, int height, int numStacks, int stackCapacity, SeaPort currentPort) {
-		super(width, height);
-		this.id = idSerial++;
-		this.containers = new ListContainersStack(numStacks, stackCapacity);
-		this.currentPort = currentPort;
-	}
-
-	public Ship(int width, int height, Color color, int numStacks, int stackCapacity, SeaPort currentPort) {
-		super(width, height, color);
-		this.id = idSerial++;
-		this.containers = new ListContainersStack(numStacks, stackCapacity);
-		this.currentPort = currentPort;
+	public Ship(SeaPort currentPort, int numStacks, int stackCapacity) {
+		super(idSerial++, currentPort, numStacks, stackCapacity);
 	}
 	
-	public int getId() {
-		return this.id;
+	public Ship(SeaPort currentPort, int numStacks) {
+		super(idSerial++, currentPort, numStacks, 0);
 	}
 	
-	public int getWidth() {
-		return this.width;
-	}
-
-	public int getHeight() {
-		return this.height;
+	public Ship(SeaPort currentPort) {
+		super(idSerial++, currentPort, 1, 0);
 	}
 	
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
+	public Ship(int numStacks, int stackCapacity) {
+		super(idSerial++, new NullSeaPort(), numStacks, stackCapacity);
 	}
 	
-	public void addContainer(Container container) {
-		this.containers.load(container);
+	public Ship(int numStacks) {
+		super(idSerial++, new NullSeaPort(), numStacks, 0);
 	}
 	
-	public Container removeContainer() {
-		return this.containers.unload();
-	}
-	
-	public void enterPort(NotNullSeaPort port) {
-		if (!this.currentPort.isNull()) {
-			// if already in another port - remove from it 
-			((NotNullSeaPort) this.currentPort).removeShip(this);
-		}
-		this.currentPort = port;
-		port.addShip(this);
-	}
-	
-	public void leavePort() {
-		if (!this.currentPort.isNull()) {
-			this.currentPort = new NullSeaPort();
-		}
+	@Override
+	public String toString() {
+		return "Ship " + super.toString();
 	}
 }
