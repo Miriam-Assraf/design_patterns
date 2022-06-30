@@ -3,23 +3,20 @@ package Model;
 public class LoadingDock {
 	//public static final int MaxContainers = 5;
 	private IContainer containers;
+	private int numStacks;
 	
-	public LoadingDock(int numStacks, int stackCapacity) {
+	public LoadingDock(int numStacks, int stackCapacity, boolean fill) {
+		this.numStacks = numStacks;
 		if (numStacks == 1) {
-			this.containers = new ContainersStack(stackCapacity);
+			this.containers = new ContainersStack(stackCapacity, fill);
 		}
 		else {
-			this.containers = new ListContainerStacks(numStacks, stackCapacity);
+			this.containers = new ListContainerStacks(numStacks, stackCapacity, fill);
 		}
 	}
 	
-	public LoadingDock(int numStacks) {
-		if (numStacks == 1) {
-			containers = new ContainersStack();
-		}
-		else {
-			this.containers = new ListContainerStacks();
-		}
+	public LoadingDock(int maxStackSize) {
+		this.containers = new ListContainerStacksBuilder(maxStackSize);
 	}
 	
 	public IContainer getContainerStacks() {
@@ -48,11 +45,7 @@ public class LoadingDock {
 	}
 	
 	public int getNumStacks() {
-		if (this.containers instanceof ListContainerStacks) {
-			return ((ListContainerStacks) this.containers).getNumStacks();
-		}
-		
-		return 1;
+		return this.numStacks;
 	}
 	
 	public void undo() {

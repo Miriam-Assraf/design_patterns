@@ -5,10 +5,10 @@ import javafx.scene.Group;
 
 public class StackView {
 	private double x,y;
-	private int capacity;
+	private int size;
 	
 	public StackView(ContainersStack stack, double x, double y) {
-		this.capacity = stack.getNumContainers();
+		this.size = stack.getNumContainers();
 		this.x = x;
 		this.y = y;
 	}
@@ -17,10 +17,9 @@ public class StackView {
 		double x = this.x;
 		double y = this.y;
 		
-		for (int i=0; i<this.capacity; i++) {
-			ContainerView containerView = new ContainerView(x, y);
+		for (int i=0; i<this.size; i++) {
+			ContainerView containerView = new ContainerView(x, y-i*ContainerView.height);
 			containerView.show(root);
-			y += ContainerView.height;
 		}
 	}
 }

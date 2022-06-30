@@ -6,10 +6,10 @@ public class NotNullSeaPort extends SeaPort{
 	private LoadingDock loadingDock;
 	private CommandManager commandManager;
 	
-	public NotNullSeaPort(String name, String country, int numStacks, int stackCapacity) {
+	public NotNullSeaPort(String name, String country, int maxStackSize) {
 		this.name = name;
 		this.country = country;
-		this.loadingDock = new LoadingDock(numStacks, stackCapacity);
+		this.loadingDock = new LoadingDock(maxStackSize);
 		this.commandManager = new CommandManager();
 	}
 

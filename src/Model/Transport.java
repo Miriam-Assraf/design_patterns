@@ -14,28 +14,15 @@ public abstract class Transport {
 	private SeaPort currentPort;
 	private LoadState state;
 	
-	public Transport(int id, SeaPort currentPort, int numStacks, int stackCapacity) {
+	public Transport(int id, SeaPort currentPort, int numStacks, int stackCapacity, boolean fill) {
 		this.id = id;
 		this.currentPort = currentPort;
 		this.state = LoadState.NOT_READY;
-		this.loadingDock = new LoadingDock(numStacks, stackCapacity);
+		this.loadingDock = new LoadingDock(numStacks, stackCapacity, fill);
 	}
 	
-	public Transport(int id, int numStacks, int stackCapacity) {
-		this.id = id;
-		this.currentPort = new NullSeaPort();
-		this.state = LoadState.NOT_READY;
-		if (stackCapacity > 0) {
-			this.loadingDock = new LoadingDock(numStacks, stackCapacity);
-		}
-		else {
-			this.loadingDock = new LoadingDock(numStacks);
-		}
-	}
-	
-	public void enterPort(NotNullSeaPort port, int numStacks) {
+	public void enterPort(NotNullSeaPort port) {
 		this.setPort(port);
-		this.loadingDock = new LoadingDock(numStacks);
 	}
 	
 	public void leavePort() {

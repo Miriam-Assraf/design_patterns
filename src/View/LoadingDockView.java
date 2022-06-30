@@ -1,68 +1,37 @@
 package View;
 
-import java.util.Stack;
-import Model.Containerr;
+import Model.ContainersStack;
 import Model.LoadingDock;
-import Model.Shape;
-import javafx.beans.binding.SetExpression;
 import javafx.scene.Group;
 import javafx.scene.shape.Line;
 
 public class LoadingDockView {
-
-	private int x, y, width;
-	private int currentContainers;
-	private Stack<Containerr> containers;
-
-	public LoadingDockView(LoadingDock load) {
-		setX(load.getX());
-		setY(load.getY());
-		setWidth(load.getWidth());
-		setContainers(load.getContainersStack());
-		currentContainers = containers.size();
-	}
-
-	public int getX() {
-		return x;
-	}
-
-	public void setX(int x) {
+	private static final double alpha = ContainerView.width * 0.1;
+	private LoadingDock loadingDock;
+	private double x; 
+	private double y;
+	private double width;
+	
+	LoadingDockView(LoadingDock loadingDock, double x, double y) {
 		this.x = x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public void setY(int y) {
 		this.y = y;
+		this.width = loadingDock.getNumStacks() * ContainerView.width + (loadingDock.getNumStacks() - 1) * alpha;
+		this.loadingDock = loadingDock;		
 	}
-
-	public Stack<Containerr> getContainers() {
-		return containers;
-	}
-
-	public void setContainers(Stack<Containerr> container) {
-		this.containers = container;
-	}
-
-	public void show(Group root) {
-		double temp1 = x;
-		double temp2 = y;
-		double temp3 = width;
-		Line line = new Line(x, y, x + width, y);
+	
+	public void show(Group root) {	
+		Line line = new Line(this.x, this.y, this.x + this.width, this.y);
 		root.getChildren().add(line);
-		for (int i = 0; i < currentContainers; i++) {
-			ContainerView containerView = new ContainerView(containers.get((i)));
-			containerView.Show(root);
+		
+		int currStack = 0;
+		for (ContainersStack stack: this.loadingDock.getContainerStacks()) {
+			StackView stackView = new StackView(stack, x + currStack*(ContainerView.width + alpha), y-ContainerView.height);
+			stackView.show(root);
+			currStack++;
 		}
+	}
+	
+	public double getWidth() {
+		return this.width;
 	}
 }

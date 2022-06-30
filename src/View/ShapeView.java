@@ -6,17 +6,21 @@ import javafx.scene.shape.Shape;
 public abstract class ShapeView {
 	protected Color color;
 	protected Shape shape;
-	/*
-	public ShapeView(Color color) {
-		this.shape.setFill(color);
-	}
 	
+	public ShapeView(Color color) {
+		this.color = color;
+	}
+	/*
 	public ShapeView() {
 		this.shape.setFill(RandomColor());
 	}
 */
 	public Shape getShape() {
 		return this.shape;
+	}
+	
+	public Color getColor() {
+		return this.color;
 	}
 	
 	public static Color RandomColor() {

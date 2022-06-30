@@ -8,6 +8,7 @@ import javafx.scene.shape.Rectangle;
 public class RectangleView extends ShapeView {
 	
 	public RectangleView(double x, double y, double width, double heigth, Color color) {
+		super(color);
 		this.shape = new Rectangle(x, y, width, heigth);	
 		this.shape.setFill(color);
 	}

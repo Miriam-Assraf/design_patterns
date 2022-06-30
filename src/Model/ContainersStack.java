@@ -14,8 +14,6 @@ enum StackState {
 /* --------------------------------------------------------------------------------- */
 
 public class ContainersStack implements IContainer, Cloneable {
-	public static final int maxCapacity = 5;
-	
 	private Stack<Container> containers;
 	private int capacity;
 	private StackState state;
@@ -23,24 +21,13 @@ public class ContainersStack implements IContainer, Cloneable {
 	protected ContainerStackCareTaker careTaker = new ContainerStackCareTaker();
 	/* --------------------------------------------------------------------------------- */
 	
-	public ContainersStack() {
-		this.capacity = maxCapacity;
+	public ContainersStack(int capacity, boolean fill) {		
 		this.containers = new Stack<Container>();
 		this.state = StackState.UNMARKED;
-	}
-	
-	public ContainersStack(int capacity) {
-		assert capacity <= maxCapacity;
+		this.capacity = capacity;
 		
-		this.containers = new Stack<Container>();
-		this.state = StackState.UNMARKED;
-		
-		if (capacity != 0) {
-			this.capacity = capacity;
+		if (fill) {
 			this.fill(capacity);
-		}
-		else {
-			this.capacity = maxCapacity;
 		}
 	}
 	
@@ -159,7 +146,7 @@ public class ContainersStack implements IContainer, Cloneable {
 	
 	@Override
 	public Object clone() throws CloneNotSupportedException {
-		ContainersStack copyStack = new ContainersStack(this.capacity);
+		ContainersStack copyStack = new ContainersStack(this.capacity, false);
 		return this.copyStack(this, copyStack);
 	}
 	/* --------------------------------------------------------------------------------- */

@@ -20,16 +20,12 @@ public class ShipManager {
 	/* --------------------------------------------------------------------------------- */
 	
 	/* ----------------------------------Factory---------------------------------------- */
-	public void createShip(SeaPort currentPort, int numStacks, int stackCapacity) {
-		this.ships.add(new Ship(currentPort, numStacks, stackCapacity));
+	public void createShip(SeaPort currentPort, int numStacks, int stackCapacity, boolean fill) {
+		this.ships.add(new Ship(currentPort, numStacks, stackCapacity, fill));
 	}
 	
-	public void createShip(SeaPort currentPort, int numStacks) {
-		this.ships.add(new Ship(currentPort, numStacks));
-	}
-	
-	public void createShip(SeaPort currentPort) {
-		this.ships.add(new Ship(currentPort, 1));
+	public void createShip(int numStacks, int stackCapacity, boolean fill) {
+		this.ships.add(new Ship(new NullSeaPort(), numStacks, stackCapacity, fill));
 	}
 	
 	public void removeShip(Ship ship) {

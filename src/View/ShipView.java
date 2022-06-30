@@ -6,38 +6,35 @@ import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
 public class ShipView {
-	public static final double x1 = MainView.width/4;
-	
-	public static final double y1 = MainView.height-(SeaPortView.portStartY/2);
-	public static final double y2 = SeaPortView.portStartY;
+	public static final double x = MainView.width/5;
+	public static final double y = SeaPortView.portStartY - (MainView.height-SeaPortView.portStartY)/2; // y-h
+	public static final double height = (MainView.height-SeaPortView.portStartY)/2;
 	
 	public static final int alpha = 20;
-	
-	private double x2;
+	private double width;
 	
 	private Ship ship;
 	
 	public ShipView(Ship ship) {
 		this.ship = ship;
-		this.x2 = x1 + this.ship.getLoadingDock().getNumStacks() * ContainerView.width;
 	}
 
-	public void show(Group root) {
+	public void show(Group root) {		
+		LoadingDockView loadingDockView = new LoadingDockView(this.ship.getLoadingDock(), x, y);
+		loadingDockView.show(root);
 		
+		this.width = loadingDockView.getWidth();
 		
-		RectangleView rectangleView = new RectangleView(x1, y1, this.x2-x1, y2-y1);
-		TriangleView leftTriangleView = new TriangleView(new Pair<Double, Double>(x1, y1),
-				new Pair<Double, Double>(x1, y2), new Pair<Double, Double>(x1 - (this.x2-x1) / 5, y1));
-		TriangleView rightTriangleView = new TriangleView(new Pair<Double, Double>(this.x2, y1),
-				new Pair<Double, Double>(this.x2, y2), new Pair<Double, Double>(this.x2 / 7, y1));
+		RectangleView rectangleView = new RectangleView(x, y, this.width, height);
+		TriangleView leftTriangleView = new TriangleView(new Pair<Double, Double>(x, y),
+				new Pair<Double, Double>(x, y + height), new Pair<Double, Double>(x - this.width / 5, y), rectangleView.getColor());
+		TriangleView rightTriangleView = new TriangleView(new Pair<Double, Double>(x + this.width, y),
+				new Pair<Double, Double>(x + this.width, y + height), new Pair<Double, Double>(x + this.width + this.width / 7, y), rectangleView.getColor());
 
 		root.getChildren().addAll(rectangleView.getShape(), leftTriangleView.getShape(), rightTriangleView.getShape());
-		
-		//AllStacksView stacksView = new AllStacksView(ship.getLoadingDock(), x1+alpha/2, y1);
-		//stacksView.show(root);
 	}
 	
 	public double getX2() {
-		return this.x2;
+		return this.width;
 	}
 }

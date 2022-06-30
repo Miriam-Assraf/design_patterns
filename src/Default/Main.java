@@ -5,7 +5,7 @@ import java.util.List;
 import Model.NotNullSeaPort;
 import Model.SeaPortManager;
 import Model.Ship;
-import Model.Track;
+import Model.Truck;
 import Model.TransportationFacade;
 import View.MainView;
 //import View.MainView;
@@ -92,7 +92,12 @@ public class Main extends Application {
 		NotNullSeaPort telAvivPort = facade.getPortByName("Tel-Aviv Port");
 		
 		// Add ships to port
-		facade.addShipsToPort(telAvivPort, new ArrayList<Pair<Integer, Integer>>(List.of(new Pair<Integer, Integer>(4,5))));
+		facade.addShipsToPort(telAvivPort, new ArrayList<Pair<Integer, Integer>>(List.of(new Pair<Integer, Integer>(5,4))), true);
+		System.out.print(facade.printPort(telAvivPort));
+		System.out.print(facade.printShipsInPort(telAvivPort));
+		System.out.print(facade.printTracksInPort(telAvivPort));
+		
+		facade.addTracksToPort(telAvivPort, new ArrayList<Pair<Integer, Integer>>(List.of(new Pair<Integer, Integer>(1,0))), false);
 		System.out.print(facade.printPort(telAvivPort));
 		System.out.print(facade.printShipsInPort(telAvivPort));
 		System.out.print(facade.printTracksInPort(telAvivPort));

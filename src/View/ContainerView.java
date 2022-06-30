@@ -8,8 +8,8 @@ import javafx.scene.paint.Color;
 public class ContainerView {
 	Container container;
 	
-	public static final double width = 100;
-	public static final double height = 30;
+	public static final double width = MainView.width/10;
+	public static final double height = (MainView.height-SeaPortView.portStartY)/6;
 	
 	private double x,y;
 	
@@ -45,7 +45,7 @@ public class ContainerView {
 			root.getChildren().addAll(line0, line1, line2, line3);
 		}*/
 		
-		root.getChildren().addAll(containerView.getShape());
+		//root.getChildren().addAll(containerView.getShape());
 		//double spaceLine = width * 0.1;
 		//double num0fLine = width / spaceLine;
 	}

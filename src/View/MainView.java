@@ -1,5 +1,8 @@
 package View;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import Model.NotNullSeaPort;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -19,7 +22,10 @@ public class MainView {
 
 	public void show(NotNullSeaPort port) {
 		SeaPortView portView = new SeaPortView(port);
+		MenuView menuView = new MenuView(new ArrayList<String>(List.of("Move","Undo","Redo")));
+		
 		portView.show(this.root);
+		menuView.show(this.root);
 	}
 
 	public void clear() {

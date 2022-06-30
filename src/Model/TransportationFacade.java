@@ -7,12 +7,12 @@ import javafx.util.Pair;
 public class TransportationFacade {
 	private SeaPortManager portsManager;
 	private ShipManager shipsManager;
-	private TrackManager tracksManager;
+	private TruckManager tracksManager;
 	
 	public TransportationFacade() {
 		this.portsManager = SeaPortManager.getInstance();
 		this.shipsManager = ShipManager.getInstance();
-		this.tracksManager = TrackManager.getInstance();
+		this.tracksManager = TruckManager.getInstance();
 	}
 	
 	public void addPorts(ArrayList<Pair<String, String>> portsData) {
@@ -23,33 +23,33 @@ public class TransportationFacade {
 	}
 	
 	// Add without port
-	public void addShips(ArrayList<Pair<Integer, Integer>> shipsData) {
+	public void addShips(ArrayList<Pair<Integer, Integer>> shipsData, boolean fill) {
 		// Receives list of pairs containing for each ship numStacks and stackCapacity
 		NullSeaPort port = new NullSeaPort();
 		for (int i=0; i<shipsData.size(); i++) {
-			shipsManager.createShip(port, shipsData.get(i).getKey(), shipsData.get(i).getValue());
+			shipsManager.createShip(port, shipsData.get(i).getKey(), shipsData.get(i).getValue(), fill);
 		}
 	}
 	
-	public void addTracks(ArrayList<Pair<Integer, Integer>> tracksData) {
+	public void addTracks(ArrayList<Pair<Integer, Integer>> tracksData, boolean fill) {
 		// Receives list of pairs containing for each track numStacks and stackCapacity
 		NullSeaPort port = new NullSeaPort();
 		for (int i=0; i<tracksData.size(); i++) {
-			tracksManager.createTrack(port, tracksData.get(i).getKey(), tracksData.get(i).getValue());
+			tracksManager.createTrack(port, tracksData.get(i).getKey(), tracksData.get(i).getValue(), fill);
 		}
 	}
 	
 	// Add to port by data
-	public void addShipsToPort(NotNullSeaPort port, ArrayList<Pair<Integer, Integer>> shipsData) {
+	public void addShipsToPort(NotNullSeaPort port, ArrayList<Pair<Integer, Integer>> shipsData, boolean fill) {
 		for (int i=0; i<shipsData.size(); i++) {
-			shipsManager.createShip(port, shipsData.get(i).getKey(), shipsData.get(i).getValue());
+			shipsManager.createShip(port, shipsData.get(i).getKey(), shipsData.get(i).getValue(), fill);
 		}
 		
 	}
 	
-	public void addTracksToPort(NotNullSeaPort port, ArrayList<Pair<Integer, Integer>> tracksData) {
+	public void addTracksToPort(NotNullSeaPort port, ArrayList<Pair<Integer, Integer>> tracksData, boolean fill) {
 		for (int i=0; i<tracksData.size(); i++) {
-			tracksManager.createTrack(port, tracksData.get(i).getKey(), tracksData.get(i).getValue());
+			tracksManager.createTrack(port, tracksData.get(i).getKey(), tracksData.get(i).getValue(), fill);
 		}
 	}
 	
@@ -96,10 +96,10 @@ public class TransportationFacade {
 		return this.portsManager.loadFromPort(port, ship);
 	}
 	
-	protected Track getReadyTrack(NotNullSeaPort port) {
-		ArrayList<Track> tracksInPort = getTracksByPort(port);
+	protected Truck getReadyTrack(NotNullSeaPort port) {
+		ArrayList<Truck> tracksInPort = getTracksByPort(port);
 		
-		for (Track track: tracksInPort) {
+		for (Truck track: tracksInPort) {
 			if (track.getState() == LoadState.READY) {
 				return track;
 			}
@@ -108,7 +108,7 @@ public class TransportationFacade {
 	}
 	
 	public void markTrackContainer(NotNullSeaPort port, int numStack, int numContainer) {
-		Track track = getReadyTrack(port);
+		Truck track = getReadyTrack(port);
 		track.getLoadingDock().markContainer(numStack, numContainer);
 	}
 	
@@ -151,23 +151,23 @@ public class TransportationFacade {
 	}
 	
 	// tracks manager
-	public Track getTrackById(int id) {
+	public Truck getTrackById(int id) {
 		return tracksManager.getTrackById(id);
 	}
 	
-	public ArrayList<Track> getTracks() {
+	public ArrayList<Truck> getTracks() {
 		return tracksManager.getTracks();
 	}
 	
-	public ArrayList<Track> getTracksByPort(NotNullSeaPort port) {
+	public ArrayList<Truck> getTracksByPort(NotNullSeaPort port) {
 		return tracksManager.getTracksByPort(port);
 	}
 	
 	public String printTracksInPort(NotNullSeaPort port) {
 		StringBuilder str = new StringBuilder();
-		ArrayList<Track> tracks = getTracksByPort(port);
+		ArrayList<Truck> tracks = getTracksByPort(port);
 		
-		for (Track track: tracks) {
+		for (Truck track: tracks) {
 			str.append(track.toString());
 		}
 		

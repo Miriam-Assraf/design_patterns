@@ -5,12 +5,14 @@ import java.util.Iterator;
 import java.util.Stack;
 
 public class ListContainerStacks implements IContainer {
-	private ArrayList<ContainersStack> containers;
+	protected ArrayList<ContainersStack> containers;
 	
-	public ListContainerStacks(int numStacks, int stackCapacity) {
+	public ListContainerStacks(int numStacks, int stackCapacity, boolean fill) {
 		containers = new ArrayList<ContainersStack>();
 		
-		this.fill(numStacks, stackCapacity);
+		if (fill) {
+			this.fill(numStacks, stackCapacity);
+		}
 	}
 	
 	public ListContainerStacks() {
@@ -19,7 +21,7 @@ public class ListContainerStacks implements IContainer {
 	
 	public void fill(int numStacks, int stackCapacity) {
 		for (int i=0; i<numStacks; i++) {
-			containers.add(new ContainersStack(stackCapacity));
+			containers.add(new ContainersStack(stackCapacity, true));
 		}
 	}
 	
