@@ -1,5 +1,7 @@
 package Model;
 
+import DesignPatterns.IContainer;
+
 public class LoadingDock {
 	//public static final int MaxContainers = 5;
 	private IContainer containers;

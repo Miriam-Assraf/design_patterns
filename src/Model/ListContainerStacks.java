@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
 
+import DesignPatterns.IContainer;
+import Enums.ContainerState;
+
 public class ListContainerStacks implements IContainer {
-	protected ArrayList<ContainersStack> containers;
+	private ArrayList<ContainersStack> containers;
 	
 	public ListContainerStacks(int numStacks, int stackCapacity, boolean fill) {
-		containers = new ArrayList<ContainersStack>();
+		setContainers(new ArrayList<ContainersStack>());
 		
 		if (fill) {
 			this.fill(numStacks, stackCapacity);
@@ -16,12 +19,12 @@ public class ListContainerStacks implements IContainer {
 	}
 	
 	public ListContainerStacks() {
-		containers = new ArrayList<ContainersStack>();
+		setContainers(new ArrayList<ContainersStack>());
 	}
 	
 	public void fill(int numStacks, int stackCapacity) {
 		for (int i=0; i<numStacks; i++) {
-			containers.add(new ContainersStack(stackCapacity, true));
+			getContainers().add(new ContainersStack(stackCapacity, true));
 		}
 	}
 	
@@ -29,7 +32,7 @@ public class ListContainerStacks implements IContainer {
 	public boolean load(Container container) {
 		boolean success = false;
 		
-		for (ContainersStack stack: this.containers) {
+		for (ContainersStack stack: this.getContainers()) {
 			success = stack.load(container);
 			if (success) {
 				break;
@@ -38,21 +41,21 @@ public class ListContainerStacks implements IContainer {
 		
 		return success;
 	}
+	
+	protected boolean hasMarkedContainer(ContainersStack stack) {
+		for (Container container: stack.getContainers()) {
+			if (container.getState() == ContainerState.MARKED) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public Container unload() {
-		ContainersStack stack = this.getMarked();
-		
-		if (stack != null) {
-			return stack.unload();
-		}
-		return null;
-	}
-	
-	public ContainersStack getMarked() {
-		for (ContainersStack stack: this.containers) {
-			if (stack.getState() == StackState.MARKED) {
-				return stack;
+		for (ContainersStack stack: this.getContainers()) {
+			if (hasMarkedContainer(stack)) {
+				return stack.unload();
 			}
 		}
 		
@@ -60,42 +63,41 @@ public class ListContainerStacks implements IContainer {
 	}
 	
 	public int getNumStacks() {
-		return this.containers.size();
+		return this.getContainers().size();
 	}
 	
 	@Override
 	public int getNumContainers() {
 		int numContainers = 0;
 		
-		for (ContainersStack stack: containers) {
+		for (ContainersStack stack: getContainers()) {
 			numContainers += stack.getNumContainers();
 		}
 		return numContainers;
 	}
 	
-	public void markContainer(int numStack, int numContainer) {
-		if (numStack > 0 && numStack <= this.containers.size()) {
-			ContainersStack stack = this.containers.get(numStack-1);
-			boolean success = stack.markContainer(numContainer);
-			
-			// if container marked
-			if (success) {
-				// check if exists marked stack
-				ContainersStack markedStack = this.getMarked();
-				if (markedStack != null) {
-					// if does - unmark it
-					markedStack.setState(StackState.UNMARKED);
-				}
-				// mark the given stack
-				stack.setState(StackState.MARKED);
+	public ContainersStack getById(int id) {
+		for (ContainersStack stack: this.getContainers()) {
+			if (stack.getId() == id) {
+				return stack;
 			}
+		}
+		
+		return null;
+	}
+	
+	public void markContainer(int numStack, int numContainer) {
+		ContainersStack stack = this.getById(numStack);
+		
+		if (stack != null ) {
+			boolean success = stack.markContainer(numContainer);
 		}
 	}
 	
 	/* ------------------------------------Memento-------------------------------------- */
 	@Override
 	public void undo() {
-		for (ContainersStack stack: this.containers) {
+		for (ContainersStack stack: this.getContainers()) {
 			if (stack.getState() == StackState.MARKED) {
 				stack.setState(StackState.UNMARKED);
 			}
@@ -107,7 +109,7 @@ public class ListContainerStacks implements IContainer {
 	
 	@Override
 	public void redo() {
-		for (ContainersStack stack: this.containers) {
+		for (ContainersStack stack: this.getContainers()) {
 			if (stack.getState() == StackState.MARKED) {
 				stack.setState(StackState.UNMARKED);
 			}
@@ -125,6 +127,14 @@ public class ListContainerStacks implements IContainer {
 	
 	@Override
 	public Iterator<ContainersStack> iterator() {
-		return this.containers.iterator();
+		return this.getContainers().iterator();
+	}
+
+	public ArrayList<ContainersStack> getContainers() {
+		return containers;
+	}
+
+	public void setContainers(ArrayList<ContainersStack> containers) {
+		this.containers = containers;
 	}
 }

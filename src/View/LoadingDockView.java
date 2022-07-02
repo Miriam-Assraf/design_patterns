@@ -1,37 +1,37 @@
 package View;
 
+import java.util.ArrayList;
+
 import Model.ContainersStack;
 import Model.LoadingDock;
 import javafx.scene.Group;
 import javafx.scene.shape.Line;
 
 public class LoadingDockView {
-	private static final double alpha = ContainerView.width * 0.1;
-	private LoadingDock loadingDock;
-	private double x; 
-	private double y;
-	private double width;
+	public static final double alpha = ContainerView.width * 0.1;
+	private Line line;
+	//private ArrayList<StackView> stackViews = new ArrayList<StackView>();
 	
-	LoadingDockView(LoadingDock loadingDock, double x, double y) {
-		this.x = x;
-		this.y = y;
-		this.width = loadingDock.getNumStacks() * ContainerView.width + (loadingDock.getNumStacks() - 1) * alpha;
-		this.loadingDock = loadingDock;		
+	public LoadingDockView(double x, double y, double width) {
+		this.line = new Line(x, y, x + width, y);
+		
+	/*	int currStack = 0;
+		for (ContainersStack stack: loadingDock.getContainerStacks()) {
+			StackView stackView = new StackView(stack, x + currStack*(ContainerView.width + alpha), y-ContainerView.height);
+			stackViews.add(stackView);
+			currStack++;
+		}*/	
 	}
 	
 	public void show(Group root) {	
-		Line line = new Line(this.x, this.y, this.x + this.width, this.y);
-		root.getChildren().add(line);
+		root.getChildren().add(this.line);
 		
-		int currStack = 0;
-		for (ContainersStack stack: this.loadingDock.getContainerStacks()) {
-			StackView stackView = new StackView(stack, x + currStack*(ContainerView.width + alpha), y-ContainerView.height);
+		/*for (StackView stackView: this.stackViews) {
 			stackView.show(root);
-			currStack++;
-		}
+		}*/
 	}
 	
-	public double getWidth() {
-		return this.width;
-	}
+	//public double getWidth() {
+	//	return this.width;
+	//}
 }

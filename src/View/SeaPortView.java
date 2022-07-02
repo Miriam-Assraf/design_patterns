@@ -1,46 +1,55 @@
 package View;
 
+import Controller.ShipManager;
+import Controller.TruckManager;
 import Model.NotNullSeaPort;
 import Model.Ship;
-import Model.ShipManager;
 import Model.Truck;
-import Model.TruckManager;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 
 public class SeaPortView {
 	public static final double portStartY = 2*MainView.height/3;
-	public static final double alpha = MainView.width/5;
+	public static final double alpha = MainView.width/3.5;
 	
-	private NotNullSeaPort port;
-	private ShipManager shipManager;
-	private TruckManager trackManager;
+	private RectangleView skyView;
+	private RectangleView roadView;
+	//private ShipView shipView;
+	//private TruckView truckView;
+	//private LoadingDockView loadingDockView;
 	
-	public SeaPortView(NotNullSeaPort port) {
-		this.port = port;
-		this.shipManager = ShipManager.getInstance();
-		this.trackManager = TruckManager.getInstance();
+	public SeaPortView() {
+		this.skyView = new RectangleView(0, 0, MainView.width, portStartY, Color.PALETURQUOISE);
+		this.roadView = new RectangleView(0, portStartY, MainView.width, MainView.height, Color.DIMGRAY);
+				
+		/*if (ship != null) {
+			this.shipView = new ShipView(ship);
+		}
+		else {
+			this.shipView = null;
+		}
+		
+		if (truck != null) {
+			this.truckView = new TruckView(truck);
+		}
+		else {
+			this.truckView = null;
+		}
+		
+		this.loadingDockView = new LoadingDockView(port.getLoadingDock(), TruckView.x + alpha, portStartY);*/
 	}
-
+	
 	public void show(Group root) {		
-		RectangleView skyView = new RectangleView(0, 0, MainView.width, portStartY, Color.LIGHTBLUE);
-		RectangleView roadView = new RectangleView(0, portStartY, MainView.width, MainView.height, Color.GRAY);
+		root.getChildren().addAll(this.skyView.getShape(), this.roadView.getShape());
 		
-		root.getChildren().addAll(skyView.getShape(), roadView.getShape());
-		
-		Ship ship = this.shipManager.getReadyShip(this.port);
-		if (ship != null) {
-			ShipView shipView = new ShipView(ship);
-			shipView.show(root);
+	/*	if (this.shipView != null) {
+			this.shipView.show(root);
 		}
 		
-		Truck track = this.trackManager.getReadyTrack(this.port);
-		if (track != null) {
-			TruckView trackView = new TruckView(track);
-			trackView.show(root);
+		if (this.truckView != null) {
+			this.truckView.show(root);
 		}
 		
-		LoadingDockView loadingDockView = new LoadingDockView(this.port.getLoadingDock(), TruckView.x + alpha, portStartY);
-		loadingDockView.show(root);
+		this.loadingDockView.show(root);*/
 	}
 }

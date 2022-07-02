@@ -1,5 +1,7 @@
 package Model;
 
+import DesignPatterns.CommandManager;
+
 public class NotNullSeaPort extends SeaPort{
 	private String name;
 	private String country;
@@ -16,7 +18,7 @@ public class NotNullSeaPort extends SeaPort{
 	public NotNullSeaPort(String name, String country) {
 		this.name = name;
 		this.country = country;
-		this.loadingDock = new LoadingDock(1);
+		this.loadingDock = new LoadingDock(5);
 		this.commandManager = new CommandManager();
 	}
 	
@@ -47,6 +49,6 @@ public class NotNullSeaPort extends SeaPort{
 
 	@Override
 	public String toString() {
-		return "Port " + this.name + ", " + this.country + ": " + String.valueOf(this.loadingDock.getContainerStacks().getNumContainers()) + " containers in loading dock.\n";
+		return "Port " + this.name + ", " + this.country + ": " + String.valueOf(this.loadingDock.getNumContainers()) + " containers in loading dock.\n";
 	}
 }

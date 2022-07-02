@@ -2,6 +2,8 @@ package Model;
 
 import java.util.ArrayList;
 
+import Enums.ContainerState;
+
 public class Container<T extends Object> implements Cloneable {
 	private static int idSerial = 0;
 	private int id;

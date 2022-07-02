@@ -3,6 +3,8 @@ package Model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import DesignPatterns.IContainer;
+
 public class ListContainerStacksBuilder implements IContainer {
 	protected ListContainerStacks listStacks;
 	private int maxStackSize;
@@ -13,7 +15,7 @@ public class ListContainerStacksBuilder implements IContainer {
 	}
 	
 	public void addStack() {
-		this.listStacks.containers.add(new ContainersStack(this.maxStackSize, false));
+		this.listStacks.getContainers().add(new ContainersStack(this.maxStackSize, false));
 	}
 	
 	@Override
@@ -33,7 +35,12 @@ public class ListContainerStacksBuilder implements IContainer {
 
 	@Override
 	public Container unload() {
-		return this.listStacks.unload();
+		for (ContainersStack stack: this.listStacks.getContainers()) {
+			for (Container container: stack.getContainers()) {
+				return stack.unload();
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -54,6 +61,6 @@ public class ListContainerStacksBuilder implements IContainer {
 	}
 	
 	public int getNumStacks() {
-		return this.listStacks.containers.size();
+		return this.listStacks.getContainers().size();
 	}
 }

@@ -6,6 +6,10 @@ import java.util.Spliterator;
 import java.util.Stack;
 import java.util.function.Consumer;
 
+import DesignPatterns.ContainerStackCareTaker;
+import DesignPatterns.IContainer;
+import Enums.ContainerState;
+
 /* -------------------------------------State--------------------------------------- */
 enum StackState {
 	MARKED,
@@ -14,6 +18,8 @@ enum StackState {
 /* --------------------------------------------------------------------------------- */
 
 public class ContainersStack implements IContainer, Cloneable {
+	private static int idSerial = 0;
+	private int id;
 	private Stack<Container> containers;
 	private int capacity;
 	private StackState state;
@@ -21,7 +27,8 @@ public class ContainersStack implements IContainer, Cloneable {
 	protected ContainerStackCareTaker careTaker = new ContainerStackCareTaker();
 	/* --------------------------------------------------------------------------------- */
 	
-	public ContainersStack(int capacity, boolean fill) {		
+	public ContainersStack(int capacity, boolean fill) {	
+		this.id = idSerial++;
 		this.containers = new Stack<Container>();
 		this.state = StackState.UNMARKED;
 		this.capacity = capacity;
@@ -37,6 +44,20 @@ public class ContainersStack implements IContainer, Cloneable {
 			this.containers.push(container);
 			container.setState(ContainerState.LOADED);
 		}
+	}
+	
+	public Container getById(int id) {
+		for (Container container: this.containers) {
+			if (container.getId() == id) {
+				return container;
+			}
+		}
+		
+		return null;
+	}
+	
+	public int getId() {
+		return this.id;
 	}
 	
 	@Override
@@ -60,8 +81,10 @@ public class ContainersStack implements IContainer, Cloneable {
 	
 	public boolean markContainer(int numContainer) {
 		boolean success = false;
-		if (this.containers.size()-numContainer < this.containers.size()) {
-			this.containers.get(this.containers.size()-numContainer).setState(ContainerState.MARKED);
+		Container container = this.getById(numContainer);
+		
+		if (container != null) {
+			container.setState(ContainerState.MARKED);
 			success = true;
 		}
 		return success;

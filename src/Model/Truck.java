@@ -13,6 +13,6 @@ public class Truck extends Transport {
 	
 	@Override
 	public String toString() {
-		return "Track " + super.toString();
+		return "Truck " + super.toString();
 	}
 }

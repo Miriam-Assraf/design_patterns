@@ -1,10 +1,6 @@
 package Model;
 
-enum LoadState {
-	READY,
-	NOT_READY
-}
-
+import Enums.LoadState;
 
 public abstract class Transport {
 	private int id;

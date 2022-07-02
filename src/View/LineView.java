@@ -10,5 +10,6 @@ public class LineView extends ShapeView {
 	public LineView(Pair<Double, Double> p1, Pair<Double, Double> p2) {
 		super(Color.BLACK);
 		this.shape = new Line(p1.getKey(), p1.getValue(), p2.getKey(), p2.getValue());
+		this.shape.setStroke(Color.TRANSPARENT);
 	}
 }
